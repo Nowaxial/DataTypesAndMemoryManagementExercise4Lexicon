@@ -37,6 +37,89 @@ namespace DataTypesAndMemoryManagement
 
             //switch(nav){...}
 
+            List<string> theList = new List<string>();
+
+
+
+            while (true)
+            {
+
+
+                Console.Clear();// Rensa konsolen
+
+                Console.WriteLine("╔═════════════════════════════════════╗");
+                Console.WriteLine("║          LIST EXAMINATION           ║");
+                Console.WriteLine("╠═════════════════════════════════════╣");
+                Console.WriteLine("║ Enter '+name' to add to list        ║");
+                Console.WriteLine("║ Enter '-name' to remove from list   ║");
+                Console.WriteLine("║ Enter 'exit' to return to main menu ║");
+                Console.WriteLine("╚═════════════════════════════════════╝\n");
+
+
+
+                var capacity = theList.Capacity;
+                var count = theList.Count;
+
+                // 
+                Console.WriteLine($"Current list: [{string.Join(",", theList)}]");
+                Console.WriteLine($"The list capacity: {capacity} | The list count: {count}\n");
+
+                Console.WriteLine("Enter the command you want to use: ");
+                string command = Console.ReadLine()!.Trim() ?? "";
+
+                // Om användaren skriver "exit", gå tillbaka till huvudmenyn
+                if (command.ToLower() == "exit")
+                {
+                    Console.WriteLine("Returning to main menu....");
+                    Thread.Sleep(1250);
+                    return;
+                }
+
+                // Om kommandot är tomt eller ogiltigt, ge ett felmeddelande
+                if (string.IsNullOrEmpty(command) || command.Length < 2 || (command[0] != '+' && command[0] != '-'))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red; // Röd färg för att indikera ett fel
+                    Console.WriteLine($"\n⛔ Invalid input. Please use '+' to add or '-' to remove.");
+                    Console.ResetColor();
+                    Console.WriteLine("\nPress any key to try again...");
+                    Console.ReadKey(); // Vänta på användaren
+                    continue; // Fortsätt till nästa iteration av loopen
+                }
+
+                // Hämta operationen (första tecknet) och värdet (resten av strängen)
+                char operations = command[0];
+
+                // Ta bort det första tecknet (operationen) och trimma värdet
+                string value = command.Substring(1).Trim();
+
+                switch (operations)
+                {
+                    case '+':
+                        theList.Add(value);
+                        Console.ForegroundColor = ConsoleColor.Green;// Grön färg för att indikera att något har lagts till
+                        Console.WriteLine($"\n✓ Added '{value}' to the list | New capacity: {theList.Capacity}");
+                        Console.ResetColor();
+                        Console.WriteLine("\nPress any key to continue...");
+                        Console.ReadKey();  // Paus för att se resultatet
+                        break;
+
+                    case '-':
+                        if (theList.Remove(value))
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green; // Grön färg för att indikera att något har tagits bort
+                            Console.WriteLine($"\n✓ Removed '{value}' from the list | Capacity: {theList.Capacity}");
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow; // Gul färg för att indikera att något inte hittades
+                            Console.WriteLine($"\n⚠ '{value}' is not found in the list");
+                        }
+                        Console.ResetColor();
+                        Console.WriteLine("\nPress any key to continue...");
+                        Console.ReadKey();  // Paus för att se resultatet
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -72,6 +155,8 @@ namespace DataTypesAndMemoryManagement
              */
 
         }
+
+
 
         static void MainMenu()
         {
