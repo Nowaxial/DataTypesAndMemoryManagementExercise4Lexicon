@@ -1,13 +1,10 @@
-﻿using System.Runtime.ExceptionServices;
-using System.Text;
+﻿using System.Text;
 
 namespace DataTypesAndMemoryManagement
 {
     class Program
     {
-        /// <summary>
-        /// The main method, vill handle the menues for the program
-        /// </summary>
+        /// <summary> The main method, vill handle the menues for the program </summary>
         /// <param name="args"></param>
         static void Main()
         {
@@ -15,11 +12,28 @@ namespace DataTypesAndMemoryManagement
             MainMenu(); //Anropar Main Menu metoden
         }
 
-        /// <summary>
-        /// Examines the datastructure List
-        /// </summary>
+        /// <summary> Examines the datastructure List </summary>
         static void ExamineList()
         {
+
+            /*                  ===== Frågor och svar =====
+             1. När ökar listans kapacitet? (Alltså den underliggande arrayens storlek) 
+                -
+
+             2. Med hur mycket ökar kapaciteten?
+                -
+
+             3. Varför ökar inte listans kapacitet i samma takt som element läggs till?
+                -
+
+             4. Minskar kapaciteten när element tas bort ur listan?
+                -
+
+             5. När är det då fördelaktigt att använda en egendefinierad array istället för en lista?
+                -
+            */
+
+
             /*
              * Loop this method untill the user inputs something to exit to main menue.
              * Create a switch statement with cases '+' and '-'
@@ -122,9 +136,7 @@ namespace DataTypesAndMemoryManagement
             }
         }
 
-        /// <summary>
-        /// Examines the datastructure Queue
-        /// </summary>
+        /// <summary> Examines the datastructure Queue </summary>
         static void ExamineQueue()
         {
             /*
@@ -132,11 +144,104 @@ namespace DataTypesAndMemoryManagement
              * Create a switch with cases to enqueue items or dequeue items
              * Make sure to look at the queue after Enqueueing and Dequeueing to see how it behaves
             */
+
+            Queue<string> theQueueInICA = new Queue<string>();
+
+            while (true)
+            {
+                Console.Clear();// Rensa konsolen
+
+                Console.WriteLine("╔══════════════════════════════════════════════════════╗");
+                Console.WriteLine("║                ICA Queue Simulator                   ║");
+                Console.WriteLine("╠══════════════════════════════════════════════════════╣");
+                Console.WriteLine("║ Type 'add name' to add a person to the queue         ║");
+                Console.WriteLine("║ Type 'next' to serve the first person in queue       ║");
+                Console.WriteLine("║ Type 'exit' when you're done to return to main menu  ║");
+                Console.WriteLine("╚══════════════════════════════════════════════════════╝\n");
+
+
+                var count = theQueueInICA.Count;
+
+
+                if (count == 0)
+                {
+                    Console.WriteLine($"Current queue: [{string.Join(", ", theQueueInICA)}]");
+                }
+                else
+                {
+                    Console.WriteLine("=== Current persons in queue ===");
+
+                    foreach (var person in theQueueInICA)
+                    {
+
+                        Console.WriteLine($"- {person}");
+                    }
+                    Console.WriteLine($"Current queue count: {count}\n");
+
+                }
+
+
+                Console.Write("Add a person to join the queue: ");
+                string input = Console.ReadLine()!.Trim() ?? "";
+
+                if (input.ToLower() == "exit")
+                {
+                    Console.WriteLine("Closing the cashier....");
+                    Thread.Sleep(1300);
+                    break;
+                }
+
+                if (input.StartsWith("add"))
+                {
+                    if (input.Length <= 4) // "add" är 3 tecken + 1 mellanslag = 4
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n⛔ Please enter a name after 'add'.");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        string name = input.Substring(4).Trim();
+                        theQueueInICA.Enqueue(name);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"\n✓ '{name}' has joined the queue.");
+                        Console.ResetColor();
+                    }
+                    Console.WriteLine("\nPress any key to continue...");
+                    Console.ReadKey();
+                }
+
+                else if (input.Equals("next"))
+                {
+                    if (theQueueInICA.Count > 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green; // Grön färg för att indikera att något har tagits bort
+                        Console.WriteLine($"{theQueueInICA.Dequeue()} was served!");
+                        Console.ResetColor();
+                        Console.WriteLine("\nPress any key to continue...");
+                        Console.ReadKey();  // Paus för att se resultatet
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red; // Röd färg för att indikera ett fel
+                        Console.WriteLine($"\n⛔ No one is in the queue.");
+                        Console.ResetColor();
+                        Console.WriteLine("\nPress any key to continue...");
+                        Console.ReadKey();  // Paus för att se resultatet
+                    }
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"\n⚠ Unknown command. Try 'add name' or 'next'.");
+                    Console.ResetColor();
+                    Console.WriteLine("\nPress any key to continue...");
+                    Console.ReadKey();  // Paus för att se resultatet
+                }
+            }
         }
 
-        /// <summary>
-        /// Examines the datastructure Stack
-        /// </summary>
+        /// <summary> Examines the datastructure Stack </summary>
         static void ExamineStack()
         {
             /*
@@ -165,7 +270,16 @@ namespace DataTypesAndMemoryManagement
             while (true)
             {
                 Console.Clear();
-                DisplayMenu();
+                Console.Title = "DataTypes and Memory Management";
+                Console.WriteLine("╔══════════════════════════════════╗");
+                Console.WriteLine("║     DATA STRUCTURE EXPLORER      ║");
+                Console.WriteLine("╠══════════════════════════════════╣");
+                Console.WriteLine("║ 1. Examine List                  ║");
+                Console.WriteLine("║ 2. Examine Queue                 ║");
+                Console.WriteLine("║ 3. Examine Stack                 ║");
+                Console.WriteLine("║ 4. Check Parenthesis Validity    ║");
+                Console.WriteLine("║ 0. Exit                          ║");
+                Console.WriteLine("╚══════════════════════════════════╝");
 
                 // Visa felmeddelande under menyn om det finns
                 if (!string.IsNullOrEmpty(errorMessage))
@@ -189,7 +303,7 @@ namespace DataTypesAndMemoryManagement
                         continue;
                     }
 
-                    // CATCH-BLOCK - Här hamnar alla exceptions
+
                     switch (input)
                     {
                         case "0":
@@ -212,26 +326,15 @@ namespace DataTypesAndMemoryManagement
                             break;
                     }
                 }
-                catch (Exception ex)  // Detta är där "catchen" hamnar
+                catch (Exception ex)  // CATCH-BLOCK - Här hamnar alla exceptions
+
                 {
                     errorMessage = $"Operation failed: {ex.Message}";
                 }
             }
         }
 
-        static void DisplayMenu()
-        {
-            Console.Title = "DataTypes and Memory Management";
-            Console.WriteLine("╔══════════════════════════════════╗");
-            Console.WriteLine("║     DATA STRUCTURE EXPLORER      ║");
-            Console.WriteLine("╠══════════════════════════════════╣");
-            Console.WriteLine("║ 1. Examine List                  ║");
-            Console.WriteLine("║ 2. Examine Queue                 ║");
-            Console.WriteLine("║ 3. Examine Stack                 ║");
-            Console.WriteLine("║ 4. Check Parenthesis Validity    ║");
-            Console.WriteLine("║ 0. Exit                          ║");
-            Console.WriteLine("╚══════════════════════════════════╝");
-        }
+
     }
 
 }
