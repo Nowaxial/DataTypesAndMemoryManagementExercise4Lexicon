@@ -215,7 +215,7 @@ namespace DataTypesAndMemoryManagement
                 {
                     if (theQueueInICA.Count > 0)
                     {
-                        Console.ForegroundColor = ConsoleColor.Green; // Grön färg för att indikera att något har tagits bort
+                        Console.ForegroundColor = ConsoleColor.Green; 
                         Console.WriteLine($"{theQueueInICA.Dequeue()} was served!");
                         Console.ResetColor();
                         Console.WriteLine("\nPress any key to continue...");
@@ -249,6 +249,83 @@ namespace DataTypesAndMemoryManagement
              * Create a switch with cases to push or pop items
              * Make sure to look at the stack after pushing and and poping to see how it behaves
             */
+
+            Stack<string> theIcaStack = new Stack<string>();
+
+            while (true)
+            {
+                Console.Clear();// Rensa konsolen
+                Console.WriteLine("╔══════════════════════════════════════════════════════╗");
+                Console.WriteLine("║         ICA Stack Simulator (UNREALISTIC)            ║");
+                Console.WriteLine("╠══════════════════════════════════════════════════════╣");
+                Console.WriteLine("║ Type 'push name' to add a person to join the stack   ║");
+                Console.WriteLine("║ Type 'pop' to serve the LAST person in the stack     ║");
+                Console.WriteLine("║ Type 'exit' when you're done to return to main menu  ║");
+                Console.WriteLine("╚══════════════════════════════════════════════════════╝\n");
+
+
+                Console.WriteLine("\nCurrent stack (LAST person to join is FIRST to leave):");
+                Console.WriteLine("BOTTOM ← " + string.Join(" ← ", theIcaStack.Reverse())); //Här visas stacken med den senaste personen först
+
+                Console.WriteLine($"Current stack count: {theIcaStack.Count}\n");
+
+                Console.Write("What do you want to do?  ");
+                string input = Console.ReadLine()!.Trim() ?? "";
+
+                if (input.ToLower() == "exit")
+                {
+                    Console.WriteLine("Closing the cashier....");
+                    Thread.Sleep(1300);
+                    break;
+                }
+
+                if (input.StartsWith("push "))
+                {
+                    if (input.Length <= 5) 
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n⛔ Please enter a name after 'push'.");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        string name = input.Substring(5).Trim();
+                        theIcaStack.Push(name);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"\n⏫ {name} joined the stack! (Now at TOP)");
+                        Console.ResetColor();
+                    }
+                    Console.WriteLine("\nPress any key to continue...");
+                    Console.ReadKey();
+                }
+                else if (input.Equals("pop"))
+                {
+                    if (theIcaStack.Count > 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green; // Grön färg för att indikera att något har tagits bort
+                        Console.WriteLine($"\n⏬ {theIcaStack.Pop()} was served! (Removed from TOP)");
+                        Console.ResetColor();
+                        Console.WriteLine("\nPress any key to continue...");
+                        Console.ReadKey();  // Paus för att se resultatet
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red; // Röd färg för att indikera ett fel
+                        Console.WriteLine($"\n⛔ No one is in the queue.");
+                        Console.ResetColor();
+                        Console.WriteLine("\nPress any key to continue...");
+                        Console.ReadKey();  // Paus för att se resultatet
+                    }
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"\n⚠  Unknown command. Try 'push name' or 'pop'.");
+                    Console.ResetColor();
+                    Console.WriteLine("\nPress any key to continue...");
+                    Console.ReadKey();  // Paus för att se resultatet
+                }
+            }
         }
 
         static void CheckParanthesis()
