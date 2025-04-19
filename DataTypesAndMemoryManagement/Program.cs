@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.ComponentModel.Design;
+using System.Text;
 
 namespace DataTypesAndMemoryManagement
 {
@@ -61,20 +62,15 @@ namespace DataTypesAndMemoryManagement
 
                 Console.Clear();// Rensa konsolen
 
-                Console.WriteLine("╔═════════════════════════════════════╗");
-                Console.WriteLine("║          LIST EXAMINATION           ║");
-                Console.WriteLine("╠═════════════════════════════════════╣");
-                Console.WriteLine("║ Enter '+name' to add to list        ║");
-                Console.WriteLine("║ Enter '-name' to remove from list   ║");
-                Console.WriteLine("║ Enter 'exit' to return to main menu ║");
-                Console.WriteLine("╚═════════════════════════════════════╝\n");
-
-
-
+                Console.WriteLine("=============== LIST EXAMINATION ===============\n");
+                Console.WriteLine("         Enter '+name' to add to list             ");
+                Console.WriteLine("         Enter '-name' to remove from list        ");
+                Console.WriteLine("       Enter 'exit' to return to main menu      \n");
+                Console.WriteLine("==================================================\n");
                 var capacity = theList.Capacity;
                 var count = theList.Count;
 
-                // 
+                // Visa listan och dess kapacitet och antal element
                 Console.WriteLine($"Current list: [{string.Join(",", theList)}]");
                 Console.WriteLine($"The list capacity: {capacity} | The list count: {count}\n");
 
@@ -150,14 +146,13 @@ namespace DataTypesAndMemoryManagement
             while (true)
             {
                 Console.Clear();// Rensa konsolen
+                Console.WriteLine("================== ICA Queue Simulator =================\n");
+                Console.WriteLine("     Type 'add name' to add a person to the queue       ");
+                Console.WriteLine("     Type 'next' to serve the first person in queue     ");
+                Console.WriteLine("     Type 'exit' when you're done to return to main menu");
+                Console.WriteLine("========================================================\n");
 
-                Console.WriteLine("╔══════════════════════════════════════════════════════╗");
-                Console.WriteLine("║                ICA Queue Simulator                   ║");
-                Console.WriteLine("╠══════════════════════════════════════════════════════╣");
-                Console.WriteLine("║ Type 'add name' to add a person to the queue         ║");
-                Console.WriteLine("║ Type 'next' to serve the first person in queue       ║");
-                Console.WriteLine("║ Type 'exit' when you're done to return to main menu  ║");
-                Console.WriteLine("╚══════════════════════════════════════════════════════╝\n");
+
 
 
                 var count = theQueueInICA.Count;
@@ -191,7 +186,7 @@ namespace DataTypesAndMemoryManagement
                     break;
                 }
 
-                if (input.StartsWith("add"))
+                if (input.StartsWith("add "))
                 {
                     if (input.Length <= 4) // "add" är 3 tecken + 1 mellanslag = 4
                     {
@@ -215,7 +210,7 @@ namespace DataTypesAndMemoryManagement
                 {
                     if (theQueueInICA.Count > 0)
                     {
-                        Console.ForegroundColor = ConsoleColor.Green; 
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"{theQueueInICA.Dequeue()} was served!");
                         Console.ResetColor();
                         Console.WriteLine("\nPress any key to continue...");
@@ -251,79 +246,143 @@ namespace DataTypesAndMemoryManagement
             */
 
             Stack<string> theIcaStack = new Stack<string>();
+            Stack<string> theReversedText = new Stack<string>();
 
             while (true)
             {
                 Console.Clear();// Rensa konsolen
-                Console.WriteLine("╔══════════════════════════════════════════════════════╗");
-                Console.WriteLine("║         ICA Stack Simulator (UNREALISTIC)            ║");
-                Console.WriteLine("╠══════════════════════════════════════════════════════╣");
-                Console.WriteLine("║ Type 'push name' to add a person to join the stack   ║");
-                Console.WriteLine("║ Type 'pop' to serve the LAST person in the stack     ║");
-                Console.WriteLine("║ Type 'exit' when you're done to return to main menu  ║");
-                Console.WriteLine("╚══════════════════════════════════════════════════════╝\n");
+                Console.WriteLine("========== STACK EXAMINATION MENU ===========\n");
+                Console.WriteLine("     1. ICA Stack Simulator (Unrealistic)");
+                Console.WriteLine("     2. Reverse Text ");
+                Console.WriteLine("     3. Return to Main Menu");
+                Console.WriteLine("=============================================\n");
+
+                Console.Write("Select an option (1-3): ");
+                string option = Console.ReadLine()!.Trim() ?? "";
 
 
-                Console.WriteLine("\nCurrent stack (LAST person to join is FIRST to leave):");
-                Console.WriteLine("BOTTOM ← " + string.Join(" ← ", theIcaStack.Reverse())); //Här visas stacken med den senaste personen först
-
-                Console.WriteLine($"Current stack count: {theIcaStack.Count}\n");
-
-                Console.Write("What do you want to do?  ");
-                string input = Console.ReadLine()!.Trim() ?? "";
-
-                if (input.ToLower() == "exit")
+                if (option == "1")
                 {
-                    Console.WriteLine("Closing the cashier....");
-                    Thread.Sleep(1300);
-                    break;
+
+                    while (true)
+                    {
+                        Console.Clear();// Rensa konsolen
+                        Console.WriteLine("============ ICA Stack Simulator (UNREALISTIC) ============\n");
+                        Console.WriteLine("     Type 'push name' to add a person to join the stack");
+                        Console.WriteLine("     Type 'pop' to serve the LAST person in the stack  ");
+                        Console.WriteLine("     Type 'exit' when you're done to return to main menu");
+                        Console.WriteLine("===========================================================\n");
+
+
+                        Console.WriteLine("\nCurrent stack (LAST person to join is FIRST to leave):");
+                        Console.WriteLine("BOTTOM ← " + string.Join(" ← ", theIcaStack.Reverse())); //Här visas stacken med den senaste personen först
+
+                        Console.WriteLine($"Current stack count: {theIcaStack.Count}\n");
+
+                        Console.Write("What do you want to do?  ");
+                        string input = Console.ReadLine()!.Trim() ?? "";
+
+                        if (input.ToLower() == "exit")
+                        {
+                            Console.WriteLine("Closing the cashier....");
+                            Thread.Sleep(1300);
+                            break;
+                        }
+
+                        if (input.StartsWith("push "))
+                        {
+                            if (input.Length <= 5)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("\n⛔ Please enter a name after 'push'.");
+                                Console.ResetColor();
+                            }
+                            else
+                            {
+                                string name = input.Substring(5).Trim();
+                                theIcaStack.Push(name);
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine($"\n⏫ {name} joined the stack! (Now at TOP)");
+                                Console.ResetColor();
+                            }
+                            Console.WriteLine("\nPress any key to continue...");
+                            Console.ReadKey();
+                        }
+                        else if (input.Equals("pop"))
+                        {
+                            if (theIcaStack.Count > 0)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Green; // Grön färg för att indikera att något har tagits bort
+                                Console.WriteLine($"\n⏬ {theIcaStack.Pop()} was served! (Removed from TOP)");
+                                Console.ResetColor();
+                                Console.WriteLine("\nPress any key to continue...");
+                                Console.ReadKey();  // Paus för att se resultatet
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red; // Röd färg för att indikera ett fel
+                                Console.WriteLine($"\n⛔ No one is in the queue.");
+                                Console.ResetColor();
+                                Console.WriteLine("\nPress any key to continue...");
+                                Console.ReadKey();  // Paus för att se resultatet
+                            }
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine($"\n⚠  Unknown command. Try 'push name' or 'pop'.");
+                            Console.ResetColor();
+                            Console.WriteLine("\nPress any key to continue...");
+                            Console.ReadKey();  // Paus för att se resultatet
+                        }
+                    }
+
                 }
-
-                if (input.StartsWith("push "))
+                else if (option == "2")
                 {
-                    if (input.Length <= 5) 
+                    Console.Clear();
+                    Console.WriteLine("========== REVERSE TEXT ==========\n");
+                    Console.WriteLine("     Enter a string to reverse    ");
+                    Console.WriteLine("==================================\n");
+
+                    Console.Write("Enter text to reverse: ");
+                    string textToReverse = Console.ReadLine()!.Trim() ?? "";
+
+                    Stack<char> reveresedChars = new Stack<char>();
+
+                    foreach (char c in textToReverse)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("\n⛔ Please enter a name after 'push'.");
-                        Console.ResetColor();
+                        reveresedChars.Push(c);
                     }
-                    else
+
+                    string reversedText = "";
+
+                    while (reveresedChars.Count > 0)
                     {
-                        string name = input.Substring(5).Trim();
-                        theIcaStack.Push(name);
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"\n⏫ {name} joined the stack! (Now at TOP)");
-                        Console.ResetColor();
+                        reversedText += reveresedChars.Pop();
                     }
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine($"\nOriginal: {textToReverse}");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"Reversed: {reversedText}");
+                    Console.ResetColor();
+
                     Console.WriteLine("\nPress any key to continue...");
                     Console.ReadKey();
                 }
-                else if (input.Equals("pop"))
+                else if (option == "3")
                 {
-                    if (theIcaStack.Count > 0)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Green; // Grön färg för att indikera att något har tagits bort
-                        Console.WriteLine($"\n⏬ {theIcaStack.Pop()} was served! (Removed from TOP)");
-                        Console.ResetColor();
-                        Console.WriteLine("\nPress any key to continue...");
-                        Console.ReadKey();  // Paus för att se resultatet
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red; // Röd färg för att indikera ett fel
-                        Console.WriteLine($"\n⛔ No one is in the queue.");
-                        Console.ResetColor();
-                        Console.WriteLine("\nPress any key to continue...");
-                        Console.ReadKey();  // Paus för att se resultatet
-                    }
+                    Console.WriteLine("Returning to main menu....");
+                    Thread.Sleep(1250);
+                    break;
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"\n⚠  Unknown command. Try 'push name' or 'pop'.");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\n⛔ Invalid option. Please choose between 1-3.");
                     Console.ResetColor();
-                    Console.WriteLine("\nPress any key to continue...");
-                    Console.ReadKey();  // Paus för att se resultatet
+                    Console.WriteLine("\nPress any key to try again...");
+                    Console.ReadKey(); // Vänta på användaren
                 }
             }
         }
@@ -336,8 +395,100 @@ namespace DataTypesAndMemoryManagement
              * Example of incorrect: (()]), [), {[()}],  List<int> list = new List<int>() { 1, 2, 3, 4 );
              */
 
-        }
 
+            Console.Clear();
+            Console.WriteLine("=========== PARENTHESIS VALIDITY CHECK ===========");
+            Console.WriteLine("    Enter a string to check for valid paranthesis");
+            Console.WriteLine("     Type 'exit' to return to main menu           ");
+            Console.WriteLine("==================================================\n");
+
+
+
+
+            while (true)
+            {
+                Console.Write("Enter a string to check: ");
+                string input = Console.ReadLine()!.Trim() ?? "";
+                if (input.ToLower() == "exit")
+                {
+                    Console.WriteLine("Returning to main menu....");
+                    Thread.Sleep(1250);
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\n⛔ Invalid input: Empty string.");
+                    Console.ResetColor();
+                    Console.WriteLine("\nPress any key to try again...");
+                    Console.ReadKey();
+                    continue;
+                }
+
+                bool containsAnyParenthesis = input.Any(c => "(){}[]<>".Contains(c));
+                if (!containsAnyParenthesis)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\n⛔ Invalid input: The string must contain at least one parenthesis.");
+                    Console.ResetColor();
+                    Console.WriteLine("\nPress any key to try again...");
+                    Console.ReadKey();
+                    continue;
+                }
+
+
+
+                // Enklare metod för att kontrollera parenteser
+                bool isValid = true;
+                Stack<char> parenteserStack = new Stack<char>();
+
+                // Gå igenom varje tecken i strängen
+                foreach (char c in input)
+                {
+                   
+                    // Om det är en öppningsparentes - lägg på stacken
+                    if (c == '(')
+                        parenteserStack.Push(')');
+                    else if (c == '{')
+                        parenteserStack.Push('}');
+                    else if (c == '[')
+                        parenteserStack.Push(']');
+                    else if (c == '<')
+                        parenteserStack.Push('>');
+
+                    // Om det är en stängningsparentes - kolla om den matchar toppen av stacken
+                    else if (c == ')' || c == '}' || c == ']' || c == '>')
+                    {
+                        // Om stacken är tom eller om tecknet inte matchar det översta värdet i stacken
+                        if (parenteserStack.Count == 0 || c != parenteserStack.Pop())
+                        {
+                            isValid = false;
+                            break;  // Avbryt loopen om vi hittar ett fel
+                        }
+                    }
+                    // Alla andra tecken ignoreras
+                }
+
+                // Kontrollera att alla öppningsparenteser har matchats
+                if (parenteserStack.Count > 0)
+                    isValid = false;
+
+                if (isValid)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"\n✓ The string '{input}' has valid paranthesis.");
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\n⛔ The string '{input}' has invalid paranthesis.");
+                }
+                Console.ResetColor();
+                Console.WriteLine("\nPress any key to continue...");
+                Console.ReadKey();
+            }
+        }
 
 
         static void MainMenu()
