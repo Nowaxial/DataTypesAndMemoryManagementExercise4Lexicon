@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.Design;
-using System.Text;
+﻿using System.Text;
 
 namespace DataTypesAndMemoryManagement
 {
@@ -9,6 +8,92 @@ namespace DataTypesAndMemoryManagement
         /// <param name="args"></param>
         static void Main()
         {
+            #region Frågor och svar Övning 4
+            /*
+             1. Hur fungerar stacken och heapen? Förklara gärna med exempel eller skiss på dess grundläggande funktion
+                
+                STACKEN:
+                - Fungerar som en trave med tallrikar
+                - Det som läggs till SENAST hamnar ÖVERST
+                - Man kan bara nå det som ligger ÖVERST (LIFO = Last In First Out)
+                - Automatisk städning - grejer försvinner när metoden är klar
+                - Lagrar enkla saker: int, bool, float, struct (värdetyper)
+    
+                Exempel:
+                void Metod()
+                {
+                 int x = 5; // Hamnar på stacken
+                } // x försvinner automatiskt här
+
+                ============================================================
+
+                HEAPEN:
+                - Fungerar som ett stort förråd
+                - Man kan nå allt OM man har "adressen" (referensen)
+                - Saker ligger kvar tills Garbage Collector städar
+                - Man behöver en "adress" (referens) för att komma åt sakerna
+                - Lagrar större saker: class, string, List (referenstyper)
+    
+                Exempel:
+                class Person {} // Klasser lagras på heapen
+                Person p = new Person(); // p är en "adress" till objektet
+
+             2. Vad är Value Types respektive Reference Types och vad skiljer dem åt?
+
+                    VALUE TYPES (värdetyper):
+                     - Lagras på STACKEN (om de inte är i ett objekt)
+                     - Kopieras när de tilldelas
+                     - Exempel: int, double, bool, struct
+    
+                    Exempel:
+                    int a = 10;
+                    int b = a; // b får en KOPIA av 10
+                    a = 20;    // b förblir 10
+           
+
+                    REFERENCE TYPES (referenstyper):
+                    - Lagras på HEAPEN
+                    - Variabeln är en "adress" till objektet
+                    - Exempel: class, string, List
+    
+                    Exempel:
+                    List<int> listaA = new List<int>();
+                    List<int> listaB = listaA; // Båda pekar på SAMMA lista
+                    listaA.Add(1); // Ändring syns i listaB också!
+
+             3. Följande metoder genererar olika svar. Den första returnerar 3, den andra returnerar 4, varför? 
+
+                    FÖRSTA METODEN:
+                    public int ReturnValue()
+                    {
+                    int x = new int();
+                    x = 3;
+                    int y = new int();
+                    y = x
+                    y = 4;
+                    return x; // Returnerar 3
+                    }
+                    
+                    - Här används value types. y är en kopia av x, så när y ändras påverkar det inte x.
+
+                    ANDRA METODEN:
+                    public int ReturnValue2()
+                    {
+                    MyInt x = new MyInt();
+                    x.MyValue = 3;
+                    MyInt y = x;
+                    y.MyValue = 4;
+                    return x.MyValue; // Returnerar 4
+                    }
+
+                    - Här används reference types. y och x pekar på samma objekt på heapen, så en ändring via y syns också via x.
+
+                    Sammanfattning:
+                    Value types: KOPIERAS 
+                    Reference types: PEKAR 
+            */
+            #endregion
+
             Console.OutputEncoding = Encoding.UTF8; //Sätter teckenkodningen till UTF-8 för att stödja specialtecken
             MainMenu(); //Anropar Main Menu metoden
         }
@@ -17,22 +102,30 @@ namespace DataTypesAndMemoryManagement
         static void ExamineList()
         {
 
-            /*                  ===== Frågor och svar =====
-             1. När ökar listans kapacitet? (Alltså den underliggande arrayens storlek) 
-                -
+            #region Frågor och svar ExamineList()
+            /* 
+                               
+             1. Skriv klart implementationen av ExamineList-metoden så att undersökningen blir genomförbar
+                - Gjord längre ner
 
-             2. Med hur mycket ökar kapaciteten?
-                -
+             2. När ökar listans kapacitet? (Alltså den underliggande arrayens storlek) 
+                - Så fort första elementet läggs till i listan så blir kapaciteten 4, den ökar sen när man lägger till 5e,9e,17e elementet osv 
+                  (Kapacitet 4 → 8 → 16 osv..)
 
-             3. Varför ökar inte listans kapacitet i samma takt som element läggs till?
-                -
+             3. Med hur mycket ökar kapaciteten?
+                - Kapaciteten börjar från början med 4 när ett element läggs till (.NET inplemenation) som sedan ökar med det dubbla 
+                  (4 → 8 → 16 osv..)
 
-             4. Minskar kapaciteten när element tas bort ur listan?
-                -
+             4. Varför ökar inte listans kapacitet i samma takt som element läggs till?
+                - Den ökar inte en och en för att minska minnesallokeringar
 
-             5. När är det då fördelaktigt att använda en egendefinierad array istället för en lista?
-                -
+             5. Minskar kapaciteten när element tas bort ur listan?
+                - Nej, kapaciteten minskar inte pga prestanda.
+
+             6. När är det då fördelaktigt att använda en egendefinierad array istället för en lista?
+                - Det är fördelaktigt att använda en en egendefnierad array, när man vet i förväg vilken storlek den ska ha och arrayen inte kommer att ändras.
             */
+            #endregion
 
 
             /*
@@ -52,10 +145,11 @@ namespace DataTypesAndMemoryManagement
 
             //switch(nav){...}
 
+
+
+
+
             List<string> theList = new List<string>();
-
-
-
             while (true)
             {
 
@@ -135,6 +229,26 @@ namespace DataTypesAndMemoryManagement
         /// <summary> Examines the datastructure Queue </summary>
         static void ExamineQueue()
         {
+            #region ICA Queue List FIFO
+            /*
+                HÄNDELSE	                LISTA (FRÄMST → SIST)	     FÖRKLARING
+                ======================================================================================
+                a. ICA öppnar       	    [ ]	                         Tom lista
+                b. Kalle kommer 	        [Kalle]	                     Kalle hamnar FRÄMST
+                c. Greta kommer	            [Kalle, Greta]	             Greta hamnar SIST
+                d. Expedering	            [Greta]	                     Kalle (FRÄMST) lämnar, Greta blir först
+                e. Stina ställer sig	    [Greta, Stina]	             Stina SIST
+                f. Expedering	            [Stina]	                     Greta (FRÄMST) lämnar, Stina blir först
+                g. Olle ställer sig	        [Stina, Olle]	             Olle sist
+                =======================================================================================
+
+                KÖNS NYCKELPRINCIPER:
+                1. Enqueue (ställa sig i kön) → Hamnar SIST i kön
+                2. Dequeue (expedieras) → Alltid den FRÄMSTA går
+                3. Först in (Kalle) → Först ut (när han når kassan)
+             */
+            #endregion
+
             /*
              * Loop this method untill the user inputs something to exit to main menue.
              * Create a switch with cases to enqueue items or dequeue items
@@ -146,13 +260,11 @@ namespace DataTypesAndMemoryManagement
             while (true)
             {
                 Console.Clear();// Rensa konsolen
-                Console.WriteLine("================== ICA Queue Simulator =================\n");
+                Console.WriteLine("=============== ICA Queue Simulator (FILO) ===============\n");
                 Console.WriteLine("     Type 'add name' to add a person to the queue       ");
                 Console.WriteLine("     Type 'next' to serve the first person in queue     ");
                 Console.WriteLine("     Type 'exit' when you're done to return to main menu");
-                Console.WriteLine("========================================================\n");
-
-
+                Console.WriteLine("==========================================================\n");
 
 
                 var count = theQueueInICA.Count;
@@ -239,6 +351,36 @@ namespace DataTypesAndMemoryManagement
         /// <summary> Examines the datastructure Stack </summary>
         static void ExamineStack()
         {
+
+            #region ICA Queue Stack FILO - ORÄTTVIS KÖHANTERING!
+            /*
+
+    
+            HÄNDELSE           STACK (ÖVERST → UNDERST)      FÖRKLARING
+            ===========================================================================
+            a. ICA öppnar      [ ]                           Tom stack
+            b. Kalle kommer    [Kalle]                       Kalle hamnar UNDERST
+            c. Greta kommer    [Greta, Kalle]                Greta hamnar ÖVERST
+            d. Expediering     [Kalle]                       Greta (ÖVERST) går först
+            e. Stina kommer    [Stina, Kalle]                Stina hamnar ÖVERST
+            f. Expediering     [Kalle]                       Stina (ÖVERST) går först
+            g. Olle kommer     [Olle, Kalle]                 Olle hamnar ÖVERST
+            ===========================================================================
+
+            STACK-PRINCIPER I AKTION:
+            • Push() = Någon ställer sig i "kön" (läggs ÖVERST)
+            - tex. stack.Push("Greta") → [Greta, Kalle]
+    
+            • Pop() = Någon expedieras (alltid den ÖVERSTA)
+            - tex. stack.Pop() → Tar bort "Greta"
+    
+            PROBLEM SOM KÖSYSTEM:
+            • Kalle (först in) blir kvar längst ner i stacken
+            • Olle (senast in) skulle bli nästa att serveras!
+            • Orättvis ordning - inte som en riktig kö.
+            */
+            #endregion
+
             /*
              * Loop this method until the user inputs something to exit to main menue.
              * Create a switch with cases to push or pop items
@@ -275,7 +417,7 @@ namespace DataTypesAndMemoryManagement
 
 
                         Console.WriteLine("\nCurrent stack (LAST person to join is FIRST to leave):");
-                        Console.WriteLine("BOTTOM ← " + string.Join(" ← ", theIcaStack.Reverse())); //Här visas stacken med den senaste personen först
+                        Console.WriteLine("BOTTOM ← " + string.Join(" ← ", theIcaStack.Reverse()) + " ← TOP"); //Här visas stacken med den senaste personen som är TOP
 
                         Console.WriteLine($"Current stack count: {theIcaStack.Count}\n");
 
@@ -446,7 +588,7 @@ namespace DataTypesAndMemoryManagement
                 // Gå igenom varje tecken i strängen
                 foreach (char c in input)
                 {
-                   
+
                     // Om det är en öppningsparentes - lägg på stacken
                     if (c == '(')
                         parenteserStack.Push(')');
